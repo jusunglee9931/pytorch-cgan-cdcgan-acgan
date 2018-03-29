@@ -28,8 +28,8 @@ class DataDistribution(object):
 
 
 
-seed = 11
-#seed = 42
+
+seed = 42
 np.random.seed(seed)
 torch.manual_seed(seed)
 
@@ -43,22 +43,15 @@ z_size =100
 label_size = 10
 batch_size = 16
 g_gd = np.random.uniform(-1. , 1.,(batch_size, z_size)).astype(np.float32)
-#g_gd = np.repeat(g_gd, batch_size)
 g_gd = np.tile(g_gd, (label_size,1))
 g_gd = torch.from_numpy(g_gd).view(-1,z_size).unsqueeze(-1).unsqueeze(-1)
 g_gs = Variable(g_gd.cuda())
 
 
 g_c  = np.linspace(0,label_size-1,label_size).astype(np.int)
-#g_c  = np.tile(g_c, batch_size)
 g_c  = np.repeat(g_c, batch_size)
 g_c = torch.LongTensor(g_c)
-#g_c = torch.ones(batch_size,1).type(torch.LongTensor)
-'''
-g_one_hot_label = torch.FloatTensor(label_size,label_size,y_size,x_size).zero_()
-g_one_hot_label.scatter_(1, g_c.view(label_size,label_size,y_size,x_size), 1)
-g_v_label = Variable(g_one_hot_label.cuda())
-'''
+
 g_one_hot_label = torch.FloatTensor(batch_size*label_size,label_size).zero_()
 g_one_hot_label.scatter_(1, g_c.view(-1,1), 1)
 g_one_hot_label = g_one_hot_label.unsqueeze(-1).unsqueeze(-1)
@@ -206,7 +199,7 @@ def train(model,trl,gd):
        
         #print(one_ch_label)
         #print(batch_label)
-        model.g_opt.zero_grad()
+        model.d_opt.zero_grad()
         
 
         d1,c_d1 = model.d(ds)
@@ -224,9 +217,9 @@ def train(model,trl,gd):
         model.d_opt.step()
 
 
-        model.d_opt.zero_grad()
+        model.g_opt.zero_grad()
         
-        loss_g = model.ct(d2,ones) +loss_c_d2
+        loss_g = model.ct(d2,ones)
         loss_g.backward(retain_graph=True)
         model.g_opt.step()
 	
