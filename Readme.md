@@ -5,8 +5,8 @@ pytorch-cgan-cdcgan-acgan
 cGAN
 -----------------
 
-# Mnist Result
-## Epoch timelapse
+### Mnist Result
+#### Epoch timelapse
 
 <table align='center'>
 <tr align='center'>
@@ -131,8 +131,6 @@ both (generator, discriminator) net , output activation fuction : Sigmoid,
 </tr>
 </table>
 
-
-
 <table align='center'>
 <tr align='center'>
  <td> Epoch 30 </td>
@@ -243,13 +241,47 @@ ACGAN
 both (generator, discriminator) net , output activation fuction : Sigmoid,
 
 
+### Cifar Result
+#### Epoch timelapse
+
+<table align='center'>
+<tr align='center'>
+ <td> Epoch 0 </td>
+<td> Epoch 10 </td>
+<td> Epoch 20 </td>
+ </tr>
+<tr>
+ <td><img src = 'img/acgan_cifiar/cifar_acgan_figure_epoch_edit_0.png'> </td>
+ <td><img src = 'img/acgan_cifiar/cifar_acgan_figure_epoch_edit_10.png'></td>
+ <td><img src = 'img/acgan_cifiar/cifar_acgan_figure_epoch_edit_20.png'> </td>
+</tr>
+</table>
+
+<table align='center'>
+<tr align='center'>
+ <td> Epoch 30 </td>
+<td> Epoch 40 </td>
+<td> Epoch 50 </td>
+ </tr>
+<tr>
+ <td><img src = 'img/acgan_cifiar/cifar_acgan_figure_epoch_edit_30.png'> </td>
+ <td><img src = 'img/acgan_cifiar/cifar_acgan_figure_epoch_edit_40.png'> </td>
+ <td><img src = 'img/acgan_cifiar/cifar_acgan_figure_epoch_edit_50.png'> </td>
+</tr>
+</table>
+
+### Enviroment
+1. epoch : 50, batch size : 16, learning rate : 0.0002 ,activation fuction : ReLU For 
+both (generator, discriminator) net , output activation fuction : Sigmoid,
+
 
 
 ### Reference
 
 1. https://github.com/znxlwm/pytorch-MNIST-CelebA-GAN-DCGAN
 2. https://github.com/hwalsuklee/tensorflow-generative-model-collections
-
+3. https://github.com/gitlimlab/ACGAN-PyTorch
+4. https://github.com/lukedeo/keras-acgan
 
 
 
