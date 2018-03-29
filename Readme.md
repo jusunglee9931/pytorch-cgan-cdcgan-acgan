@@ -237,7 +237,7 @@ ACGAN
 
 
 ### Enviroment
-1. epoch : 3, batch size : 32, learning rate : 0.0002 ,activation fuction : ReLU For 
+1. epoch : 3, batch size : 16, learning rate : 0.0002 ,activation fuction : ReLU For 
 both (generator, discriminator) net , output activation fuction : Sigmoid,
 
 
