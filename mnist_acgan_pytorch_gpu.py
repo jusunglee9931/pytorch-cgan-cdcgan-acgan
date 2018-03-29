@@ -22,7 +22,6 @@ class DataDistribution(object):
         self.sigma =sigma
     def sample(self, z_size,bs):
         samples = np.random.uniform(-1. , 1., (bs,z_size,1,1)).astype(np.float32)
-       # samples.sort()
         return samples
 
 
@@ -273,7 +272,7 @@ def main(args):
    
     model = GAN(args,1,1)
     dd = DataDistribution(0,1)
-    #model.load()
+
     if args.eval:
      for i in range(10):
       generateimage(model,dd,i)

@@ -189,8 +189,7 @@ def train(model,trl,gd):
         gs = Variable(torch.from_numpy(gd.sample(z_size,model.batch_size)).cuda())
         
         one_hot_label = torch.FloatTensor(model.batch_size,label_size).zero_()
-        tensor_label = torch.LongTensor(batch_label)
-        one_hot_label.scatter_(1,tensor_label.view(-1,1),1)
+        one_hot_label.scatter_(1,torch.LongTensor(batch_label).view(-1,1),1)
         one_hot_label = one_hot_label.unsqueeze(-1).unsqueeze(-1)
         v_label = Variable(one_hot_label.cuda())
        

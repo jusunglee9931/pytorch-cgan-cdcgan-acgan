@@ -17,7 +17,6 @@ train_dataset = dsets.MNIST(root='./data',
 
 
 seed = 11
-#seed = 42
 np.random.seed(seed)
 torch.manual_seed(seed)
 '''
@@ -36,17 +35,8 @@ class DataDistribution(object):
 
     def sample(self, in_s,bs):
         samples = np.random.uniform(-1. , 1.,(bs,in_s)).astype(np.float32)
-       # samples.sort()
         return samples
 
-
-class GeneratorDistribution(object):
-    def __init__(self, range = 8):
-        self.range = range
-
-    def sample(self, N):
-        return (np.linspace(-self.range, self.range, N) + \
-            np.random.random(N) * 0.01).astype(np.float32)
 
 
 def parse_args():
@@ -70,7 +60,7 @@ def parse_args():
 
 '''
 m  =model
-
+e  =epoch
 '''
 
 def drawlossplot( m,loss_g,loss_d,e):
@@ -105,9 +95,7 @@ class generator(nn.Module):
   
       def forward(self, x,y):
           out_1 = self.fc1(x)
-          #out_1 = self.do(out_1)
           out_2 = self.fc4(y)
-          #out_2 = self.do(out_2)
           out = torch.cat((out_1,out_2),1)
           out = self.fc5(out)
           out = self.stp(out)
@@ -134,9 +122,7 @@ class discriminator(nn.Module):
           self.do = nn.Dropout()
       def forward(self,x,y):
           out_1 = self.fc1(x)
-          #out_1 = self.do(out_1)
           out_2 = self.fc4(y)
-          #out_2 = self.do(out_2)
           out = torch.cat((out_1,out_2),1)
           out = self.fc5(out)
           out = self.relu(out)
@@ -267,7 +253,6 @@ def main(args):
     model = GAN(args,28*28,args.z_size)
     dd = DataDistribution(0,1)
     
-    #model.load()
     if args.eval:
      for i in range(10):
       generateimage(model,dd,i)

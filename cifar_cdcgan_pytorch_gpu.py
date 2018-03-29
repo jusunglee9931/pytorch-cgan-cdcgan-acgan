@@ -9,7 +9,7 @@ import torchvision.transforms as transforms
 import math
 
 
-train_dataset = dsets.MNIST(root='./data', 
+train_dataset = dsets.CIFAR10(root='./data', 
                             train=True, 
                             transform=transforms.Compose([
                                                           transforms.Resize(64)
@@ -22,6 +22,7 @@ class DataDistribution(object):
         self.sigma =sigma
     def sample(self, z_size,bs):
         samples = np.random.uniform(-1. , 1., (bs,z_size,1,1)).astype(np.float32)
+       # samples.sort()
         return samples
 
 
@@ -36,7 +37,8 @@ variables
 '''
 x_size =64
 y_size =64
-in_ch = 1
+in_ch = 3
+out_ch =3
 z_size =100
 label_size = 10
 batch_size = 16
@@ -45,7 +47,8 @@ g_gd = np.tile(g_gd, (label_size,1))
 g_gd = torch.from_numpy(g_gd).view(-1,z_size).unsqueeze(-1).unsqueeze(-1)
 g_gs = Variable(g_gd.cuda())
 
-g_c  = np.linspace(0,label_size-1,label_size).astype(np.int))
+
+g_c  = np.linspace(0,label_size-1,label_size).astype(np.int)
 g_c  = np.repeat(g_c, batch_size)
 g_c = torch.LongTensor(g_c)
 
@@ -88,7 +91,7 @@ def drawlossplot( m,loss_g,loss_d,e):
     plt.xlabel('epoch')
     plt.ylabel('loss value')
     plt.legend()
-    plt.savefig("mnist_dcgan_loss_epoch%d" %e)
+    plt.savefig("cifar_cdcgan_loss_epoch%d" %e)
     plt.close()
 
 def convblocklayer(in_ch,out_ch):
@@ -103,19 +106,17 @@ def deconvblocklayer(in_ch,out_ch,pad):
                          )
 
 class generator(nn.Module):
-      def __init__(self,z_channel,label_channel,o_channel):
+      def __init__(self,z_channel,o_channel):
           super(generator, self).__init__()
-          self.layer1= deconvblocklayer(z_channel,1000,0)
-          self.layer5= deconvblocklayer(label_channel,24,0)
+          self.layer1= deconvblocklayer(z_channel,1024,0)
           self.layer2= deconvblocklayer(1024,512,1)
           self.layer3= deconvblocklayer(512,256,1)
           self.layer4= deconvblocklayer(256,128,1)
           self.conv5 = nn.ConvTranspose2d(128,o_channel, kernel_size =4,stride = 2, padding =1)
           self.sg    = nn.Sigmoid()
       def forward(self, x,y):
-          out1 = self.layer1(x)
-          out2 = self.layer5(y)
-          out = torch.cat((out1,out2),1) 
+          out = torch.cat((x,y),1)
+          out = self.layer1(out)
           out = self.layer2(out)
           out = self.layer3(out)
           out = self.layer4(out)
@@ -124,19 +125,17 @@ class generator(nn.Module):
           return out
 
 class discriminator(nn.Module):
-      def __init__(self, channel,label_channel):
+      def __init__(self, channel):
           super(discriminator,self).__init__()
-          self.layer1 =convblocklayer(channel,120)
-          self.layer5 =convblocklayer(label_channel,8)
+          self.layer1 =convblocklayer(channel,128)
           self.layer2 =convblocklayer(128,256)
           self.layer3 =convblocklayer(256,512)
           self.layer4 =convblocklayer(512,1024)
           self.conv5 = nn.Conv2d(1024,1, kernel_size =4)
           self.sg = nn.Sigmoid()
       def forward(self,x,y):
-          out1 = self.layer1(x)
-          out2 = self.layer5(y)
-          out = torch.cat((out1,out2),1) 
+          out = torch.cat((x,y),1) 
+          out = self.layer1(out)
           out = self.layer2(out)
           out = self.layer3(out)
           out = self.layer4(out)
@@ -147,8 +146,8 @@ class discriminator(nn.Module):
 
 class GAN(object):
       def __init__(self,params,in_ch,o_ch):
-          self.g = generator(z_size,label_size,o_ch)
-          self.d = discriminator(in_ch,label_size)
+          self.g = generator(z_size+label_size,o_ch)
+          self.d = discriminator(in_ch+label_size)
           self.g.cuda(0)
           self.d.cuda(0)
           self.batch_size = params.batch_size
@@ -187,7 +186,8 @@ def train(model,trl,gd):
         gs = Variable(torch.from_numpy(gd.sample(z_size,model.batch_size)).cuda())
         
         one_hot_label = torch.FloatTensor(model.batch_size,label_size).zero_()
-        one_hot_label.scatter_(1,torch.LongTensor(batch_label).view(-1,1),1)
+        tensor_label = torch.LongTensor(batch_label)
+        one_hot_label.scatter_(1,tensor_label.view(-1,1),1)
         one_hot_label = one_hot_label.unsqueeze(-1).unsqueeze(-1)
         v_label = Variable(one_hot_label.cuda())
        
@@ -204,8 +204,7 @@ def train(model,trl,gd):
                                                                             x_size
                                                                             ), 1)
         v_d_label = Variable(one_ch_label.cuda())
-        #print(one_ch_label)
-        #print(batch_label)
+
         model.d_opt.zero_grad()
 
         d1 = model.d(ds,v_d_label)
@@ -231,7 +230,7 @@ def train(model,trl,gd):
         e_loss_g += loss_g.data[0]
         e_loss_d += loss.data[0]
         #if (m+1) > 2*model.batch_size:
-         #break
+        # break
      a_loss_g.append(e_loss_g/trl.__len__())
      a_loss_d.append(e_loss_d/trl.__len__())
      drawlossplot(model,a_loss_g,a_loss_d,i)
@@ -247,7 +246,7 @@ def generateimage(m,gd,e,new=False):
        else :
         g = m.g(g_gs,g_v_label)
        g = g.data.cpu().numpy()
-       g = g.reshape(-1,y_size,x_size)
+       g = g.reshape(-1,out_ch,y_size,x_size)
        #print(g)
        fig = plt.figure(figsize=(y_size,x_size),tight_layout=True)
        grid = label_size
@@ -255,8 +254,9 @@ def generateimage(m,gd,e,new=False):
         ax = fig.add_subplot(grid,grid,i+1)
         ax.set_axis_off()
         idx = int(i/label_size)*m.batch_size + i % label_size
-        plt.imshow(g[idx],shape=(y_size,x_size),cmap='Greys_r')
-       plt.savefig("dc_gan_figure_epoch%s" %e)
+        tp = np.moveaxis(g[idx],0,-1)
+        plt.imshow(tp,shape=(y_size,x_size))
+       plt.savefig("cdcgan_figure_epoch%s" %e)
        plt.close()
        m.g.train()
 
@@ -265,7 +265,7 @@ def generateimage(m,gd,e,new=False):
 
 def main(args):
    
-    model = GAN(args,1,1)
+    model = GAN(args,in_ch,out_ch)
     dd = DataDistribution(0,1)
     if args.eval:
      for i in range(10):

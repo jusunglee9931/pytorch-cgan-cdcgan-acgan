@@ -112,7 +112,74 @@ cDCGAN
 
 
 ### Enviroment
-1. epoch : 8, batch size : 32, learning rate : 0.0002 ,activation fuction : ReLU For 
+1. epoch : 8, batch size : 16, learning rate : 0.0002 ,activation fuction : ReLU For 
+both (generator, discriminator) net , output activation fuction : Sigmoid,
+
+# Cifar Result
+## Epoch timelapse
+
+<table align='center'>
+<tr align='center'>
+ <td> Epoch 0 </td>
+<td> Epoch 10 </td>
+<td> Epoch 20 </td>
+ </tr>
+<tr>
+ <td><img src = 'img/cdcgan_cifar/cifar_cdcgan_figure_epoch_edit_0.png'> </td>
+ <td><img src = 'img/cdcgan_cifar/cifar_cdcgan_figure_epoch_edit_10.png'></td>
+ <td><img src = 'img/cdcgan_cifar/cifar_cdcgan_figure_epoch_edit_20.png'> </td>
+</tr>
+</table>
+
+
+
+<table align='center'>
+<tr align='center'>
+ <td> Epoch 30 </td>
+<td> Epoch 40 </td>
+<td> Epoch 50 </td>
+ </tr>
+<tr>
+ <td><img src = 'img/cdcgan_cifar/cifar_cdcgan_figure_epoch_edit_30.png'> </td>
+ <td><img src = 'img/cdcgan_cifar/cifar_cdcgan_figure_epoch_edit_40.png'> </td>
+ <td><img src = 'img/cdcgan_cifar/cifar_cdcgan_figure_epoch_edit_50.png'> </td>
+</tr>
+</table>
+
+### Enviroment
+1. epoch : 50, batch size : 16, learning rate : 0.0002 ,activation fuction : ReLU For 
+both (generator, discriminator) net , output activation fuction : Sigmoid,
+
+
+# Celaba Result
+## Epoch timelapse
+
+<table align='center'>
+<tr align='center'>
+ <td> Epoch 0 </td>
+<td> Epoch 5 </td>
+<td> Epoch 10 </td>
+ </tr>
+<tr>
+ <td><img src = 'img/cdcgan_celeaba/cdcgan_figure_epoch_edit_0.png'> </td>
+ <td><img src = 'img/cdcgan_celeaba/cdcgan_figure_epoch_edit_5.png'></td>
+ <td><img src = 'img/cdcgan_celeaba/cdcgan_figure_epoch_edit_10.png'> </td>
+</tr>
+</table>
+
+<table align='center'>
+<tr align='center'>
+ <td> Epoch 15 </td>
+<td> Epoch 20 </td>
+ </tr>
+<tr>
+ <td><img src = 'img/cdcgan_celeaba/cdcgan_figure_epoch_edit_15.png'> </td>
+ <td><img src = 'img/cdcgan_celeaba/cdcgan_figure_epoch_edit_20.png'> </td>
+</tr>
+</table>
+
+### Enviroment
+1. epoch : 20, batch size : 16, learning rate : 0.0002 ,activation fuction : ReLU For 
 both (generator, discriminator) net , output activation fuction : Sigmoid,
 
 
@@ -146,7 +213,7 @@ cDCGAN_split
 
 
 ### Enviroment
-1. epoch : 8, batch size : 32, learning rate : 0.0002 ,activation fuction : ReLU For 
+1. epoch : 8, batch size : 16, learning rate : 0.0002 ,activation fuction : ReLU For 
 both (generator, discriminator) net , output activation fuction : Sigmoid,
 
 
