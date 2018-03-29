@@ -45,8 +45,8 @@ both (generator, discriminator) net , output activation fuction : Sigmoid,
 cGAN_split
 -----------------
 
-# Mnist Result
-## Epoch timelapse
+### Mnist Result
+#### Epoch timelapse
 
 <table align='center'>
 <tr align='center'>
@@ -85,8 +85,8 @@ both (generator, discriminator) net , output activation fuction : Sigmoid,
 cDCGAN
 -----------------
 
-# Mnist Result
-## Epoch timelapse
+### Mnist Result
+#### Epoch timelapse
 
 <table align='center'>
 <tr align='center'>
@@ -115,8 +115,8 @@ cDCGAN
 1. epoch : 8, batch size : 16, learning rate : 0.0002 ,activation fuction : ReLU For 
 both (generator, discriminator) net , output activation fuction : Sigmoid,
 
-# Cifar Result
-## Epoch timelapse
+### Cifar Result
+#### Epoch timelapse
 
 <table align='center'>
 <tr align='center'>
@@ -151,8 +151,8 @@ both (generator, discriminator) net , output activation fuction : Sigmoid,
 both (generator, discriminator) net , output activation fuction : Sigmoid,
 
 
-# Celaba Result
-## Epoch timelapse
+### Celaba Result
+#### Epoch timelapse
 
 <table align='center'>
 <tr align='center'>
@@ -186,8 +186,8 @@ both (generator, discriminator) net , output activation fuction : Sigmoid,
 cDCGAN_split
 -----------------
 
-# Mnist Result
-## Epoch timelapse
+### Mnist Result
+#### Epoch timelapse
 
 <table align='center'>
 <tr align='center'>
@@ -220,8 +220,8 @@ both (generator, discriminator) net , output activation fuction : Sigmoid,
 ACGAN
 -----------------
 
-# Mnist Result
-## Epoch timelapse
+### Mnist Result
+#### Epoch timelapse
 
 
 <table align='center'>
